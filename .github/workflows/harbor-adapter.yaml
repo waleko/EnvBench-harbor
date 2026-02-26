@@ -1,0 +1,39 @@
+name: Harbor Adapter CI
+
+on:
+  push:
+    paths:
+      - 'harbor_adapter/**'
+  pull_request:
+    paths:
+      - 'harbor_adapter/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Generate Harbor tasks
+        run: uv run --with datasets python3 harbor_adapter/run_adapter.py --output-dir /tmp/envbench-harbor --overwrite --limit 3
+
+      - name: Verify task structure
+        run: |
+          for split in train test; do
+            for task_dir in /tmp/envbench-harbor/$split/*/; do
+              echo "Checking $task_dir"
+              test -f "$task_dir/task.toml" || (echo "Missing task.toml" && exit 1)
+              test -f "$task_dir/instruction.md" || (echo "Missing instruction.md" && exit 1)
+              test -f "$task_dir/environment/Dockerfile" || (echo "Missing Dockerfile" && exit 1)
+              test -f "$task_dir/tests/test.sh" || (echo "Missing test.sh" && exit 1)
+              test -f "$task_dir/solution/solve.sh" || (echo "Missing solve.sh" && exit 1)
+              test -f "$task_dir/tests/config.json" || (echo "Missing config.json" && exit 1)
+              python3 -c "import tomllib; tomllib.loads(open('${task_dir}/task.toml').read())" || (echo "Invalid TOML" && exit 1)
+              echo "  OK"
+            done
+          done
+
+      - name: Lint harbor_adapter
+        run: uv run --with ruff ruff check harbor_adapter/
