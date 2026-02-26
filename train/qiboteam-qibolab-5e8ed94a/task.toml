@@ -1,0 +1,13 @@
+version = "1.0"
+
+[metadata]
+author = "EnvBench (JetBrains Research)"
+difficulty = "hard"
+category = "environment-setup"
+tags = ["python", "envbench", "qiboteam/qibolab"]
+
+[agent]
+timeout_sec = 600
+
+[verifier]
+timeout_sec = 600
