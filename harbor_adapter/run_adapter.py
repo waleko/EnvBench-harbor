@@ -1,8 +1,8 @@
 """CLI entry point for converting EnvBench tasks to Harbor format.
 
 Usage:
-    python harbor_adapter/run_adapter.py --output-dir ./datasets/envbench-harbor
-    python harbor_adapter/run_adapter.py --output-dir ./datasets/envbench-harbor --limit 10
+    uv run generate --output-dir ./out
+    uv run generate --output-dir ./out --limit 10
 """
 
 import argparse

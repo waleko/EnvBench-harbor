@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - 'harbor_adapter/**'
+      - 'pyproject.toml'
   pull_request:
     paths:
       - 'harbor_adapter/**'
+      - 'pyproject.toml'
 
 jobs:
   check:
@@ -16,8 +18,8 @@ jobs:
 
       - uses: astral-sh/setup-uv@v5
 
-      - name: Generate Harbor tasks
-        run: uv run --with datasets python3 harbor_adapter/run_adapter.py --output-dir /tmp/envbench-harbor --overwrite --limit 3
+      - name: Generate Harbor tasks (limit 3 per split)
+        run: uv run generate --output-dir /tmp/envbench-harbor --overwrite --limit 3
 
       - name: Verify task structure
         run: |
@@ -35,5 +37,5 @@ jobs:
             done
           done
 
-      - name: Lint harbor_adapter
-        run: uv run --with ruff ruff check harbor_adapter/
+      - name: Lint
+        run: uvx ruff check harbor_adapter/

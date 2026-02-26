@@ -1,0 +1,19 @@
+[project]
+name = "envbench-harbor"
+version = "0.1.0"
+description = "EnvBench benchmark in Harbor task format"
+requires-python = ">=3.10"
+dependencies = [
+    "datasets",
+    "huggingface-hub",
+]
+
+[project.scripts]
+generate = "harbor_adapter.run_adapter:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["harbor_adapter"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

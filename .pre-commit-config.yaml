@@ -20,7 +20,7 @@ repos:
     hooks:
       - id: generate-harbor-tasks
         name: Generate Harbor tasks
-        entry: bash -c 'uv run --with datasets python3 harbor_adapter/run_adapter.py --output-dir datasets/envbench-harbor --overwrite && git add datasets/envbench-harbor/'
+        entry: bash -c 'uv run generate --output-dir datasets/envbench-harbor --overwrite && git add datasets/envbench-harbor/'
         language: system
         files: 'harbor_adapter/.*'
         pass_filenames: false
